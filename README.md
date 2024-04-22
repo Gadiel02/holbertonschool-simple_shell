@@ -8,7 +8,7 @@ simplesh [script files]
 
 * Run commands in $PATH
 * Environment and local variables
-* $? return values, $$ pid
+* return values, $$ pid
 * Run script files, as well as commands from standard input
 
 Built-ins:
