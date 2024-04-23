@@ -1,52 +1,77 @@
-.TH MYCOMMAND 1 "22 abril 2024" "Version 1.0" "simple shell"
+.TH SIMPLE_SHELL 1 "April 2024" "Version 1.0" "Simple Shell User Manual"
 
 .SH NAME
-simple shell - A brief description of what mycommand does.
+simple_shell \- a simple Unix shell implementation
 
 .SH SYNOPSIS
-.B mycommand
-[\fIOPTIONS\fR]
-[\fIARGUMENTS\fR]
+.B simple_shell
 
 .SH DESCRIPTION
-is a shell command that execute a command from the standart input or from file
+The
+.B simple_shell
+command is a basic Unix shell implementation that allows users to execute commands from the standard input or from a file.
 
 .SH OPTIONS
-.TP
-\fB-a, --option-a\fR
-Description of option a.
+There are no command-line options for
+.B simple_shell
+at this time.
 
-.TP
-\fB-b, --option-b\fR
-Description of option b.
+.SH USAGE
+.B simple_shell
+is typically used interactively, where it provides a prompt for users to enter commands. It can also be used non-interactively by providing commands via standard input or a file.
+
+.SH COMMANDS
+.B simple_shell
+supports most basic shell commands and functionality, including but not limited to:
+.IP
+- Executing external programs
+.IP
+- Environment variable manipulation
+.IP
+- Input/output redirection
+.IP
+- Pipeline execution
+
+.SH EXIT STATUS
+The
+.B simple_shell
+command returns the following exit statuses:
+.IP
+- 0: Successful execution
+.IP
+- 1: Command not found or execution failure
 
 .SH EXAMPLES
-\fBmycommand -a arg1 -b arg2\fR
-An example illustrating how to use mycommand with options.
+Executing a command interactively:
+.BR $ simple_shell
+.BR $ ls
+.BR $ exit
 
-.SH SEE ALSO
-List of related commands or resources.
+Executing a command from a file:
+.BR $ simple_shell < commands.txt
 
 .SH AUTHORS
-Kevin rentas
+Kevin Rentas
+Gadiel Rivera
 
-gadiel Rivera
+.SH SEE ALSO
+.BR bash (1),
+.BR sh (1)
 
-.SH FILES
+.SH NOTES
+.B simple_shell
+is a simplified shell implementation and may lack some advanced features.
 
-.SH AVAILABILITY
-Where to find the latest version.
-
-.SH ACKNOWLEDGEMENTS
-Acknowledgements or credits.
-
-.SH COMMAND-LINE OPTIONS
-More detailed explanation of command-line options.
-
-.SH ENVIRONMENT VARIABLES
-
+.SH VERSION
+Version 1.0
 
 .SH HISTORY
-version 1.0
+April 2024:
 
+.SH ENVIRONMENT
+.B simple_shell
+does not rely on any specific environment variables.
 
+.SH SEE ALSO
+.BR bash (1),
+.BR sh (1)
