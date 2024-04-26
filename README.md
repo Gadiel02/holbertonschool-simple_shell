@@ -20,23 +20,23 @@ Built-ins:
 * cd
 
 ### Files
-AUTHORS
-README.md
-man_1_simple_shell.1
-shell.h
-sim_shell.c
-main.h
+* AUTHORS
+* README.md
+* man_1_simple_shell.1
+* shell.h
+* sim_shell.c
+* main.h
 
 ### List of basic commands
-cat
-mkdir
-cp
-mv
-rm
-touch
-ls
-rmdir
-echo
+* cat
+* mkdir
+* cp
+* mv
+* rm
+* touch
+* ls
+* rmdir
+* echo
 
 ### Compilation
 Your shell will be compiled this way:
