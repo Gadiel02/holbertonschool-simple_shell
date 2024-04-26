@@ -1,134 +1,66 @@
 #include "shell.h"
-
-extern char **environ;
-
-#define MAX_ARGS 100
-
+#include <stdio.h>
 
 /**
- * print_prompt - prints the shell prompt
- * @interactive: indicates whether the shell is running interactively
+ * error- found not excectubale command
+ * @args: array of arguments from get_tokens
+ * @str_line: string from stdin
  */
-void print_prompt(int interactive)
-{
-	if (interactive)
-	{
-		char *dollar = "$";
 
-		printf("%s ", dollar);	/* Print the interactive prompt */
-	}
+void error(char **args, char *str_line)
+{
+	fprintf(stderr, "./hsh: 1: %s: not found\n", args[0]);
+	free(str_line);
+	free_array(args);
+	exit(127);
 }
 
 
 /**
- * main - main function of the shell
- * Return: 0 when the program ends
+ * main - Simple System Shell (sh)
+ * Return: 0 on succes
  */
+
 int main(void)
 {
-	int num_tokens, k;
-	size_t i;
-	char *args[MAX_ARGS];
-	char *command = NULL;
-	char *token;
-	size_t buffer = 0;
-	size_t length;
-	char *path[] = {"/usr/local/bin/", "/usr/bin/", "/bin/", "/usr/local/games/", "/usr/games/"};
-	char full_path[MAX_ARGS];
-	int status;
-	pid_t pid;
-	char **env = environ;
+	char *str_line = NULL;
+	size_t len = 0;
+	ssize_t read_bytes;
+	int on = 1;
+	char **args;
 
-	int interactive = isatty(fileno(stdin));
-
-	while (1)
+	while (on != 0)
 	{
-		print_prompt(interactive);	/* Call the function to print the prompt */
-		/* Read the command line from standard input */
-		if (getline(&command, &buffer, stdin) != -1)
+		if (isatty(fileno(stdin)))
+			printf("($) ");
+		read_bytes = getline(&str_line, &len, stdin); /* stdin into str_line */
+
+		if (read_bytes == -1) /* check if getline is succesfull */
 		{
-			length = strlen(command);
-			if (command[length - 1] == '\n')
-				command[length - 1] = '\0';
-
-			if (strcmp(command, "") == 0)
-				continue;
-
-			if (strcmp(command, "exit") == 0)
-			{
-				free(command);
-				return (0);
-			}
-
-			num_tokens = 0;
-			token = strtok(command, " ");
-			while (token != NULL && num_tokens < MAX_ARGS - 1)
-			{
-				args[num_tokens++] = token;
-				token = strtok(NULL, " ");
-			}
-			args[num_tokens] = NULL;
-
-			if (num_tokens == 0)
-				continue;
-
-			for (k = 0; k < num_tokens; k++)
-				;
-
-			if (access(args[0], X_OK) == 0)
-			{
-				for (i = 0; i < 5; i++)
-				{
-					execve(command, args, env);
-					break;
-				}
-			}
+			if (isatty(fileno(stdin)))
+				printf("\n");
+			on = 0;
+		}
+		else
+		{
+			remove_newline(&str_line, &read_bytes);
+			if (strcmp(str_line, "exit") == 0) /* check if user put Exit */
+				on = 0;
 			else
 			{
-				for (i = 0; i < 5; i++)
-				{
-					strcpy(full_path, path[i]);
-					strcat(full_path, args[0]);
-
-					if (access(full_path, X_OK) == 0)
-						break;
-				}
+				args = get_tokens(str_line); /* makes tokens and args array with mallocs */
+				if ((white_spaces(args, str_line)) == 0) /* if white spaces only */
+					return (main());
+				if (access(args[0], X_OK) == 0) /*!args */
+					my_exe(args, environ);
+				else
+					get_path(args, environ); /*!args */
+				if (access(args[0], X_OK) != 0)
+					error(args, str_line);
+				free_array(args);
 			}
-
-			if (access(full_path, X_OK) == -1)
-			{
-				printf("Command not found\n");
-
-				continue;
-			}
-			pid = fork();	/* Create a child process */
-			if (pid == -1)
-			{
-				perror("fork failed");
-				exit(EXIT_FAILURE);
-			}
-
-			if (pid == 0)	/* Code executed by the child process */
-			{
-				if (execve(full_path, args, env) == -1)
-				{
-					printf("Command not found\n");
-					exit(EXIT_FAILURE);
-				}
-			}
-			else	/* Code executed by the parent process */
-			{
-				waitpid(pid, &status, 0);	/* Wait for the child process to finish */
-			}
-		}
-		else	/* If a line cannot be read from standard input */
-		{
-			if (!interactive)
-				break;
-			printf("\n");
-			break;
 		}
 	}
-	free(command);	/* Free the memory allocated for the command */
+	free(str_line);/* always free the str_line form stdin */
 	return (0);
 }
