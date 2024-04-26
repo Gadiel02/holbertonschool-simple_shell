@@ -23,9 +23,9 @@ Built-ins:
 * AUTHORS
 * README.md
 * man_1_simple_shell.1
-* shell.h
-* sim_shell.c
-* main.h
+* shell.h (header and prototypes)
+* sim_shell.c (shell program)
+* the_big_3.c (token, execute and path functions)
 
 ### List of basic commands
 * cat
