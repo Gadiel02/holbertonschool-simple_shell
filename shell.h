@@ -1,24 +1,17 @@
 #ifndef SHELL_H
 #define SHELL_H
 
-#include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <string.h>
-#include <sys/types.h>
+#include <sys/stat.h>
 #include <sys/wait.h>
-#include <sys/types.h>
-#define MAX_LINE_LENGTH 256
-
-/* prototype */
-int mul(int a, int b);
-int main(void);
-char *read_line(void);
-char **parse_command(char *line);
-int execute_command(char **args);
-char **parse_command(char *line);
-
-/* Variable prototypes */
 extern char **environ;
-
+char **get_tokens(char *str_line);
+void my_exe(char **args, char **environ);
+void remove_newline(char **str_line, ssize_t *read_bytes);
+void get_path(char **full_path, char **environ);
+void free_array(char **args);
+int white_spaces(char **args, char *str_line);
+int main(void);
 #endif
